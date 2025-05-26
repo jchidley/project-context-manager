@@ -1,21 +1,20 @@
 # Project: Project Context Manager
-Updated: 2025-01-26 15:35
+Updated: 2025-01-26 15:50
 
 ## Current State
-Status: v0.1.0 Released! First stable version available on GitHub
-Target: Production-ready context management tool for developers
-Latest: Created v0.1.0 release with comprehensive release notes
+Status: v0.1.0 Released - CRITICAL INTEGRATION ISSUE FOUND
+Target: Fix slash command integration with pc tool
+Latest: Discovered slash commands don't know about pc's context system
 
 ## Essential Context
 - Repository: https://github.com/jchidley/project-context-manager
-- Latest Release: https://github.com/jchidley/project-context-manager/releases/tag/v0.1.0
-- Local installation: ~/.local/bin/pc (from pc_unified_prototype.sh)
-- Fixed critical SQL bug in todos table creation (missing comma)
-- GitHub topics added for discoverability
-- Session logs: SESSION_001_GITHUB_SETUP.md
+- **CRITICAL**: Slash commands (/start, /checkpoint) don't find planning docs or todos
+- Planning docs exist but aren't discovered: TODO.md, PROJECT_WISDOM.md, etc.
+- Two separate todo systems: slash commands use files, pc uses SQLite
+- See SLASH_COMMAND_INTEGRATION_FIX.md for detailed analysis
 
 ## Next Step
-Consider next improvements: README badges, CI/CD setup, or feature enhancements
+Implement Option 1 from fix document: Update slash commands to be pc-aware
 
 ## If Blocked
-Review GitHub issues or community feedback for priority features
+Test with local modifications to ~/.claude/commands/ files first
