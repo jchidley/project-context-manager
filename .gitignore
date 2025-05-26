@@ -1,0 +1,23 @@
+# Test contexts
+.test-contexts/
+test-contexts/
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak
+*.log
+
+# Local testing
+scratch/
+temp/
