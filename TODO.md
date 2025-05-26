@@ -8,10 +8,12 @@ Last updated: 2025-05-26 14:35
 - [x] Implement plain text todo operations (add, complete, list) <!-- completed:2025-05-26 14:26 -->
 - [x] Update all pc commands to use plain text <!-- completed:2025-05-26 14:30 -->
 - [x] Create migration script for existing users <!-- completed:2025-05-26 14:18 -->
-- [ ] Fix /start command to auto-discover key files (TODO.md, PROJECT_WISDOM.md)
-- [ ] Make HANDOFF.md auto-include pointers to related docs
+- [x] Rename files to remove _v2 suffix <!-- completed:2025-05-26 14:40 -->
+- [x] Update install script to be more generic <!-- completed:2025-05-26 14:40 -->
 - [ ] Test with both human and LLM workflows
 - [ ] Update documentation for plain text format
+- [ ] Fix /start command to auto-discover key files (TODO.md, PROJECT_WISDOM.md)
+- [ ] Make HANDOFF.md auto-include pointers to related docs
 - [ ] Release v0.2.0 with migration guide
 
 ## To Do

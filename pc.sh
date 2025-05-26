@@ -560,8 +560,8 @@ cmd_status() {
     local context_dir="${PC_HOME}/${current}"
     for file in HANDOFF.md PROJECT_WISDOM.md TODO.md; do
         if [[ -f "$context_dir/$file" ]]; then
-            local size=$(stat -f%z "$context_dir/$file" 2>/dev/null || stat -c%s "$context_dir/$file" 2>/dev/null || echo "?")
-            local modified=$(stat -f "%Sm" -t "%Y-%m-%d %H:%M" "$context_dir/$file" 2>/dev/null || stat -c "%y" "$context_dir/$file" 2>/dev/null | cut -d' ' -f1,2 || echo "?")
+            local size=$(stat -c%s "$context_dir/$file" 2>/dev/null || stat -f%z "$context_dir/$file" 2>/dev/null || echo "?")
+            local modified=$(stat -c "%y" "$context_dir/$file" 2>/dev/null | cut -d'.' -f1 || stat -f "%Sm" -t "%Y-%m-%d %H:%M" "$context_dir/$file" 2>/dev/null || echo "?")
             printf "  %-20s %8s  %s\n" "$file" "$size" "$modified"
         fi
     done

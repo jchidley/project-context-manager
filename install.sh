@@ -1,10 +1,10 @@
 #!/bin/bash
-# Installation script for pc v2 with plain text storage
+# Installation script for Project Context Manager
 
 set -euo pipefail
 
-echo "PC v2 Installation Script"
-echo "========================"
+echo "Project Context Manager Installation"
+echo "===================================="
 echo ""
 
 # Check if old version exists
@@ -29,22 +29,23 @@ fi
 
 # Install new version
 INSTALL_PATH="${HOME}/.local/bin/pc"
-echo "Installing pc v2 to $INSTALL_PATH"
+echo "Installing pc to $INSTALL_PATH"
 
 # Create directory if needed
 mkdir -p "$(dirname "$INSTALL_PATH")"
 
 # Copy new version
-cp pc_v2.sh "$INSTALL_PATH"
+cp pc.sh "$INSTALL_PATH"
 chmod +x "$INSTALL_PATH"
 
 echo ""
 echo "Installation complete!"
 echo ""
-echo "What's new in v2:"
-echo "- Plain text TODO.md files (no more SQLite)"
-echo "- Full integration with Claude Code slash commands"
-echo "- Git-style stash and diff commands"
-echo "- Improved context switching"
+# Show version info if available
+if [[ -f "CHANGELOG.md" ]]; then
+    echo "Latest changes:"
+    # Extract the most recent version section
+    awk '/^## \[/ {if (NR>1) exit} /^##/ {p=1} p' CHANGELOG.md | head -20
+fi
 echo ""
 echo "Run 'pc help' to see all available commands"
