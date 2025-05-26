@@ -104,10 +104,12 @@ EOF
 todo_list() {
     local context=$(current_context)
     local filter="context = '$context'"
+    local show_context=0
     
     # Check for --all flag
     if [[ "${1:-}" == "--all" ]]; then
         filter="1=1"
+        show_context=1
         echo -e "${BLUE}All Todos Across Contexts${NC}"
     else
         echo -e "${BLUE}Todos for context: $context${NC}"
@@ -125,7 +127,7 @@ SELECT
     END as ' ',
     substr(title, 1, 40) as title,
     CASE WHEN github_issue IS NOT NULL THEN '#' || github_issue ELSE '' END as issue,
-    CASE WHEN '$filter' = '1=1' THEN context ELSE '' END as context
+    CASE WHEN $show_context = 1 THEN context ELSE '' END as context
 FROM todos
 WHERE $filter AND status != 'done'
 ORDER BY priority DESC, id;
