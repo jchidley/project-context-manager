@@ -1,0 +1,90 @@
+name: Test
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Check bash syntax
+      run: |
+        for script in *.sh; do
+          if [ -f "$script" ]; then
+            echo "Checking $script..."
+            bash -n "$script"
+          fi
+        done
+    
+    - name: Run shellcheck
+      run: |
+        # Install shellcheck
+        sudo apt-get update
+        sudo apt-get install -y shellcheck
+        
+        # Check all shell scripts
+        for script in *.sh; do
+          if [ -f "$script" ]; then
+            echo "Running shellcheck on $script..."
+            shellcheck "$script" || true
+          fi
+        done
+    
+    - name: Test pc installation
+      run: |
+        # Test installation script
+        ./install.sh
+        
+        # Verify pc is installed
+        test -f ~/.local/bin/pc
+        ~/.local/bin/pc help
+    
+    - name: Test basic pc operations
+      run: |
+        export PATH="$HOME/.local/bin:$PATH"
+        
+        # Test switching contexts
+        pc switch test-context
+        pc status
+        
+        # Test todo operations
+        pc todo add "Test todo item"
+        pc todo list
+        pc todo complete "Test todo"
+        
+        # Test stash operations
+        echo "# Test File" > HANDOFF.md
+        pc stash
+        pc stash list
+        
+        # Test listing contexts
+        pc list
+    
+    - name: Test migration script
+      run: |
+        # Create a mock SQLite database
+        mkdir -p ~/.project-contexts
+        sqlite3 ~/.project-contexts/todos.db <<EOF
+        CREATE TABLE todos (
+            id INTEGER PRIMARY KEY,
+            context TEXT,
+            title TEXT,
+            status TEXT DEFAULT 'todo',
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            github_issue INTEGER
+        );
+        INSERT INTO todos (context, title) VALUES ('test', 'Test todo from SQLite');
+        EOF
+        
+        # Run migration
+        ./migrate_todos_to_plain_text.sh
+        
+        # Verify migration
+        test -f ~/.project-contexts/test/TODO.md
+        grep "Test todo from SQLite" ~/.project-contexts/test/TODO.md

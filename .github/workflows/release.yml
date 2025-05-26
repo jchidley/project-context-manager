@@ -1,0 +1,64 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Create release archive
+      run: |
+        # Create a release directory
+        mkdir -p project-context-manager
+        
+        # Copy essential files
+        cp pc.sh install.sh migrate_todos_to_plain_text.sh project-context-manager/
+        cp README.md CHANGELOG.md LICENSE-* project-context-manager/
+        
+        # Create archives
+        tar -czf project-context-manager-${GITHUB_REF_NAME}.tar.gz project-context-manager
+        zip -r project-context-manager-${GITHUB_REF_NAME}.zip project-context-manager
+        
+        # Create checksums
+        sha256sum project-context-manager-${GITHUB_REF_NAME}.tar.gz > checksums.txt
+        sha256sum project-context-manager-${GITHUB_REF_NAME}.zip >> checksums.txt
+    
+    - name: Extract release notes
+      id: extract_notes
+      run: |
+        # Extract the latest version section from CHANGELOG.md
+        VERSION=${GITHUB_REF_NAME#v}
+        awk -v ver="$VERSION" '
+          /^## \[/ { if (p) exit; if (index($0, ver)) p=1; next }
+          p { print }
+        ' CHANGELOG.md > release_notes.md
+        
+        # Add installation instructions
+        cat >> release_notes.md <<EOF
+        
+        ## Installation
+        
+        \`\`\`bash
+        # Download and extract
+        curl -L https://github.com/jchidley/project-context-manager/releases/download/${GITHUB_REF_NAME}/project-context-manager-${GITHUB_REF_NAME}.tar.gz | tar -xz
+        cd project-context-manager
+        ./install.sh
+        \`\`\`
+        EOF
+    
+    - name: Upload release assets
+      uses: softprops/action-gh-release@v1
+      with:
+        body_path: release_notes.md
+        files: |
+          project-context-manager-*.tar.gz
+          project-context-manager-*.zip
+          checksums.txt

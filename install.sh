@@ -40,6 +40,27 @@ chmod +x "$INSTALL_PATH"
 
 echo ""
 echo "Installation complete!"
+
+# Install shell completions
+echo ""
+echo "Installing shell completions..."
+
+# Bash completion
+if [[ -d "$HOME/.bash_completion.d" ]] || [[ -f "$HOME/.bashrc" ]]; then
+    mkdir -p "$HOME/.bash_completion.d"
+    cp completions/pc.bash "$HOME/.bash_completion.d/pc" 2>/dev/null || true
+    echo "Bash completion installed to ~/.bash_completion.d/pc"
+    echo "Add to ~/.bashrc: source ~/.bash_completion.d/pc"
+fi
+
+# Zsh completion  
+if [[ -d "$HOME/.oh-my-zsh" ]] || [[ -f "$HOME/.zshrc" ]]; then
+    mkdir -p "$HOME/.zsh/completions"
+    cp completions/_pc "$HOME/.zsh/completions/_pc" 2>/dev/null || true
+    echo "Zsh completion installed to ~/.zsh/completions/_pc"
+    echo "Add to ~/.zshrc: fpath=(~/.zsh/completions \$fpath)"
+fi
+
 echo ""
 # Show version info if available
 if [[ -f "CHANGELOG.md" ]]; then

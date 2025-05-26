@@ -1,0 +1,73 @@
+#compdef pc
+# Zsh completion for pc (Project Context Manager)
+
+_pc() {
+    local -a commands contexts
+    
+    commands=(
+        'switch:Switch to a different context'
+        'status:Show current context status'
+        'list:List all contexts'
+        'save:Save current work files to context'
+        'restore:Restore context files to working directory'
+        'todo:Manage todos'
+        'stash:Temporarily save current context'
+        'diff:Compare with another context'
+        'log:Show context history'
+        'help:Show help information'
+    )
+    
+    # Get list of contexts
+    if [[ -d "$HOME/.project-contexts" ]]; then
+        contexts=(${(f)"$(find "$HOME/.project-contexts" -maxdepth 1 -type d -not -path "$HOME/.project-contexts" -not -name ".*" -exec basename {} \; 2>/dev/null)"})
+    fi
+    
+    case "$words[2]" in
+        switch|sw|diff)
+            _arguments \
+                '1:context:($contexts)' \
+                '--force[Force switch even with uncommitted changes]'
+            ;;
+        todo)
+            local -a todo_commands
+            todo_commands=(
+                'add:Add a new todo'
+                'list:List todos'
+                'complete:Mark todo as complete'
+            )
+            
+            if (( CURRENT == 3 )); then
+                _describe -t commands 'todo command' todo_commands
+            elif (( CURRENT == 4 )); then
+                case "$words[3]" in
+                    list|ls|l)
+                        _arguments '1:filter:(all todo done in-progress)'
+                        ;;
+                esac
+            fi
+            ;;
+        stash)
+            local -a stash_commands
+            stash_commands=(
+                'save:Save current context to stash'
+                'pop:Restore most recent stash'
+                'list:List available stashes'
+            )
+            
+            if (( CURRENT == 3 )); then
+                _describe -t commands 'stash command' stash_commands
+            fi
+            ;;
+        restore)
+            _arguments '--force[Force overwrite existing files]'
+            ;;
+        *)
+            if (( CURRENT == 2 )); then
+                _describe -t commands 'pc command' commands
+            fi
+            ;;
+    esac
+}
+
+# Also support command aliases
+compdef _pc pc

@@ -1,5 +1,8 @@
 # Project Context Manager (pc)
 
+[![GitHub release](https://img.shields.io/github/v/release/jchidley/project-context-manager)](https://github.com/jchidley/project-context-manager/releases)
+[![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue)](LICENSE-MIT)
+
 A developer tool for managing context across multiple concurrent projects. Never lose your mental state when switching between projects again.
 
 ## The Problem
