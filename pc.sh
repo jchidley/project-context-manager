@@ -486,6 +486,177 @@ cmd_diff() {
     done
 }
 
+# === SESSION LOGGING ===
+
+# Get next session number
+get_next_session_number() {
+    local context="${1:-$(get_current_context)}"
+    local context_dir="${PC_HOME}/${context}"
+    local max_session=0
+    
+    for session_file in "$context_dir"/SESSION_*.md; do
+        if [[ -f "$session_file" ]]; then
+            local num=$(basename "$session_file" | sed -n 's/SESSION_\([0-9]\+\).*\.md/\1/p')
+            if [[ $num =~ ^[0-9]+$ ]] && [[ $num -gt $max_session ]]; then
+                max_session=$num
+            fi
+        fi
+    done
+    
+    echo $((max_session + 1))
+}
+
+# Create new session log
+cmd_session_new() {
+    local title="${*:-Work Session}"
+    local context=$(get_current_context)
+    
+    if [[ -z "$context" ]]; then
+        echo -e "${RED}Error: No active context${NC}"
+        return 1
+    fi
+    
+    local context_dir="${PC_HOME}/${context}"
+    ensure_context_dir "$context"
+    
+    local session_num=$(get_next_session_number "$context")
+    local session_file="SESSION_$(printf "%03d" $session_num)_$(date +%Y%m%d).md"
+    local timestamp=$(date '+%Y-%m-%d %H:%M')
+    
+    # Create session file
+    cat > "$context_dir/$session_file" << EOF
+# Session $session_num - $title
+Date: $timestamp
+
+## Objective
+_What are you trying to accomplish?_
+
+## Progress
+
+## Discoveries
+
+## Next Steps
+
+EOF
+    
+    # Also create local copy
+    cp "$context_dir/$session_file" .
+    
+    echo -e "${GREEN}Created session log: $session_file${NC}"
+    echo "Edit the file to add your session details"
+}
+
+# Append to current session
+cmd_session_log() {
+    local content="$*"
+    local context=$(get_current_context)
+    
+    if [[ -z "$context" ]]; then
+        echo -e "${RED}Error: No active context${NC}"
+        return 1
+    fi
+    
+    if [[ -z "$content" ]]; then
+        echo -e "${RED}Usage: pc session log <message>${NC}"
+        return 1
+    fi
+    
+    local context_dir="${PC_HOME}/${context}"
+    local today=$(date +%Y%m%d)
+    local session_file=""
+    
+    # Find today's session
+    for file in "$context_dir"/SESSION_*_${today}.md; do
+        if [[ -f "$file" ]]; then
+            session_file="$file"
+            break
+        fi
+    done
+    
+    # If no session today, find most recent
+    if [[ -z "$session_file" ]]; then
+        session_file=$(ls -t "$context_dir"/SESSION_*.md 2>/dev/null | head -1)
+    fi
+    
+    # If still no session, create one
+    if [[ -z "$session_file" ]] || [[ ! -f "$session_file" ]]; then
+        cmd_session_new "Daily Work"
+        session_file=$(ls -t "$context_dir"/SESSION_*.md 2>/dev/null | head -1)
+    fi
+    
+    # Append with timestamp
+    {
+        echo ""
+        echo "### $(date '+%H:%M') - Update"
+        echo "$content"
+    } >> "$session_file"
+    
+    # Update local copy if exists
+    local local_file=$(basename "$session_file")
+    if [[ -f "$local_file" ]]; then
+        cp "$session_file" "$local_file"
+    fi
+    
+    echo -e "${GREEN}Logged to: $(basename "$session_file")${NC}"
+}
+
+# Generate session summary
+cmd_session_summary() {
+    local context=$(get_current_context)
+    
+    if [[ -z "$context" ]]; then
+        echo -e "${RED}Error: No active context${NC}"
+        return 1
+    fi
+    
+    local context_dir="${PC_HOME}/${context}"
+    local summary_file="SESSION_SUMMARY.md"
+    
+    {
+        echo "# Session Summary - $context"
+        echo "Generated: $(date '+%Y-%m-%d %H:%M')"
+        echo ""
+        echo "## Recent Sessions"
+        echo ""
+        
+        # List last 5 sessions
+        local count=0
+        for session in $(ls -t "$context_dir"/SESSION_*.md 2>/dev/null | head -5); do
+            if [[ -f "$session" ]]; then
+                local session_name=$(basename "$session" .md)
+                local title=$(grep "^# Session" "$session" | head -1 | sed 's/# //')
+                local date=$(grep "^Date:" "$session" | cut -d' ' -f2-)
+                
+                echo "### $title"
+                echo "_${date}_"
+                echo ""
+                
+                # Extract sections
+                for section in "Objective" "Progress" "Discoveries"; do
+                    local content=$(awk "/^## $section/{flag=1; next} /^##/{flag=0} flag && NF>0" "$session" | head -3)
+                    if [[ -n "$content" ]]; then
+                        echo "**$section:**"
+                        echo "$content" | sed 's/^/- /'
+                        echo ""
+                    fi
+                done
+                
+                count=$((count + 1))
+                echo "---"
+                echo ""
+            fi
+        done
+        
+    } > "$context_dir/$summary_file"
+    
+    # Copy to local directory
+    cp "$context_dir/$summary_file" .
+    
+    echo -e "${GREEN}Generated: $summary_file${NC}"
+    echo -e "${BLUE}Recent sessions:${NC}"
+    grep "^###" "$summary_file" | head -5
+}
+
 # === CONTEXT OPERATIONS ===
 
 # Switch context
@@ -618,6 +789,11 @@ ${PURPLE}Git-style Commands:${NC}
   diff <context>   Compare with another context
   log              Show context history
   
+${PURPLE}Session Logging:${NC}
+  session new [title]      Start a new session log
+  session log <message>    Append to current session
+  session summary          Generate session summary
+  
 ${PURPLE}Examples:${NC}
   pc switch my-project         Switch to my-project context
   pc todo add "Fix bug #123"   Add a todo item
@@ -720,6 +896,27 @@ main() {
         log)
             echo "Recent context operations:"
             tail -20 "$HISTORY_FILE" | grep -E "switch|save|restore|todo"
+            ;;
+            
+        # Session logging
+        session)
+            local subcmd="${1:-new}"
+            shift || true
+            case "$subcmd" in
+                new|start)
+                    cmd_session_new "$@"
+                    ;;
+                log|append)
+                    cmd_session_log "$@"
+                    ;;
+                summary)
+                    cmd_session_summary
+                    ;;
+                *)
+                    echo -e "${RED}Unknown session command: $subcmd${NC}"
+                    echo "Use: session new|log|summary"
+                    ;;
+            esac
             ;;
             
         # Help

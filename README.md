@@ -119,6 +119,7 @@ This project emerged from a real pain point: working on multiple projects led to
 
 ## Documentation
 
+- **[User Guide](USER_GUIDE.md)** - Comprehensive guide with examples and workflows
 - [Git Context Insights](GIT_CONTEXT_INSIGHTS.md) - How git patterns apply to context management
 - [GitHub Context Insights](GITHUB_CONTEXT_INSIGHTS.md) - Integration with GitHub's collaboration model
 - [Unified Context Plan](UNIFIED_CONTEXT_PLAN.md) - Complete architectural vision

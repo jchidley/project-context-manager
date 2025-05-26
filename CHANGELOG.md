@@ -5,6 +5,18 @@ All notable changes to the Project Context Manager will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- Session-based logging with `pc session` commands
+- Comprehensive user guide (USER_GUIDE.md)
+- GitHub Actions CI/CD workflows
+- Shell completions for bash and zsh
+- README badges for version and license
+
+### Changed
+- Installation script now installs shell completions
+
 ## [0.2.0] - 2025-05-26
 
 ### Changed
