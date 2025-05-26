@@ -21,3 +21,7 @@ Impact: Choosing plain text formats enables direct manipulation, git diffs, and 
 ### 2025-01-26: Integration Failures Reveal Architecture Flaws
 Insight: Slash commands couldn't find todos because of SQLite/text split
 Impact: When tools don't integrate naturally, the architecture might be wrong
+
+### 2025-01-26: Command Origins Matter for Design
+Insight: Claude Code ships with 16 planning/execution templates expecting plain text
+Impact: Tools should align with existing ecosystem conventions, not fight them
