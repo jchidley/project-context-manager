@@ -26,7 +26,7 @@ pc checkpoint "Implemented user auth, testing next"
 # See what you were doing
 pc status
 
-# Manage todos with SQLite persistence
+# Manage todos in plain text (v0.2.0+)
 pc todo add "Write tests for auth module"
 pc todo list
 
@@ -42,7 +42,8 @@ pc log
 
 - **Zero Dependencies**: Pure bash implementation, works everywhere
 - **Git-Aware**: Respects version control, warns on uncommitted changes
-- **Persistent Todos**: SQLite-backed task tracking survives context switches
+- **Plain Text Todos**: Human and LLM-editable TODO.md files (v0.2.0+)
+- **Claude Code Integration**: Works seamlessly with slash commands
 - **GitHub Integration**: Optional two-way sync with GitHub issues
 - **Non-Destructive**: Automatic backups before operations
 - **Human-Readable**: All state stored in markdown files
@@ -51,26 +52,23 @@ pc log
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/project-context-manager.git
+git clone https://github.com/jchidley/project-context-manager.git
 cd project-context-manager
 
-# Install the unified version (recommended)
-cp pc_unified_prototype.sh ~/.local/bin/pc
-chmod +x ~/.local/bin/pc
+# Install v0.2.0+ (plain text version)
+./install.sh
 
-# Or try the simpler versions
-cp pc_prototype.sh ~/.local/bin/pc-basic      # Basic functionality
-cp pc_enhanced.sh ~/.local/bin/pc-enhanced    # Git-like features
+# Or manual installation
+cp pc.sh ~/.local/bin/pc
+chmod +x ~/.local/bin/pc
 ```
 
 ## Quick Start
 
 ```bash
-# Initialize context for current project
-pc init
-
-# Start working
-pc checkpoint "Starting new feature"
+# Switch to your project
+cd ~/my-project
+pc switch my-project
 
 # Add todos
 pc todo add "Implement user authentication"
@@ -92,19 +90,25 @@ Project contexts are stored in `~/.project-contexts/` with this structure:
 ```
 ~/.project-contexts/
 ├── .active -> current_project (symlink)
-├── .todos.db (SQLite database)
+├── .todos.db (SQLite database - v0.1.0 only)
 ├── project-name/
 │   ├── HANDOFF.md (current state)
 │   ├── PROJECT_WISDOM.md (accumulated knowledge)
-│   ├── TODO.md (task list)
+│   ├── TODO.md (task list - plain text in v0.2.0+)
 │   └── *_LOG*.md (session logs)
 ```
 
-## Three Implementations
+## Upgrading from v0.1.0
 
-1. **pc_prototype.sh** - Basic context switching (MVP)
-2. **pc_enhanced.sh** - Adds git-inspired features (stash, diff, log)
-3. **pc_unified_prototype.sh** - Full system with SQLite todos and GitHub integration
+If you have existing SQLite todos:
+
+```bash
+git checkout v0.2.0-plain-text-migration
+./migrate_todos_to_plain_text.sh
+./install.sh
+```
+
+Your todos will be converted to plain text TODO.md files in each context.
 
 ## Origin Story
 

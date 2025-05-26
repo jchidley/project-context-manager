@@ -1,68 +1,30 @@
-# Project Context Manager - TODO
+# TODO - project-context-manager
 
-## Current Status
-- ✅ Phase 1: Core Context Manager (COMPLETE - v0.1.0 released)
-  - Basic switch/save/restore
-  - Git-aware (check dirty state)
-  - Non-destructive operations
-  - Stash functionality
+Last updated: 2025-05-26 14:50
 
-## Completed Today
-- [x] Created v0.1.0 release on GitHub
-- [x] Documented slash command integration issues
-- [x] Audited all slash commands (23 custom, 0 overlap with defaults)
-- [x] Added author attribution to custom commands
-- [x] Decided on plain text migration (SQLite → TODO.md)
+## In Progress - v0.2.0 Plain Text Migration
 
-## Immediate: v0.2.0 Plain Text Migration (CRITICAL)
-- [ ] Create v0.2.0 branch
-- [ ] Export existing SQLite todos to TODO.md format
-- [ ] Implement plain text todo operations (add, complete, list)
-- [ ] Update all pc commands to use plain text
+- [x] Export existing SQLite todos to TODO.md format <!-- completed:2025-05-26 14:18 -->
+- [x] Implement plain text todo operations (add, complete, list) <!-- completed:2025-05-26 14:26 -->
+- [x] Update all pc commands to use plain text <!-- completed:2025-05-26 14:30 -->
+- [x] Create migration script for existing users <!-- completed:2025-05-26 14:18 -->
+- [x] Rename files to remove _v2 suffix <!-- completed:2025-05-26 14:40 -->
+- [x] Update install script to be more generic <!-- completed:2025-05-26 14:40 -->
+- [x] Test with both human and LLM workflows <!-- completed:2025-05-26 14:55 -->
+- [ ] Update documentation for plain text format
 - [ ] Fix /start command to auto-discover key files (TODO.md, PROJECT_WISDOM.md)
 - [ ] Make HANDOFF.md auto-include pointers to related docs
-- [ ] Create migration script for existing users
-- [ ] Test with both human and LLM workflows
-- [ ] Update documentation for plain text format
 - [ ] Release v0.2.0 with migration guide
 
-## Phase 2: Work Item Management (REDESIGNED)
-- [x] ~~Persistent todos across contexts~~ → Moving to plain text
-- [ ] Todo sections in TODO.md (High Priority, In Progress, Completed)
-- [ ] Cross-context todo search using grep
-- [ ] GitHub issue linking with #123 format
-- [ ] Archive completed todos to history file
+## To Do
 
-## Phase 3: GitHub Integration (NEXT)
-- [ ] Link todos to GitHub issues (basic linking exists)
-- [ ] Create issues from todos with `pc todo add --issue`
-- [ ] Sync status bidirectionally
-- [ ] PR-based context creation
-- [ ] Full `gh` CLI integration for seamless workflow
-
-## Phase 4: Knowledge Management
-- [ ] Wiki for shared knowledge
-- [ ] Discussions for decisions
-- [ ] Templates for contexts
-- [ ] Search across everything
-
-## Immediate Improvements (v0.2.0 candidates)
-- [ ] Add README badges (version, license)
-- [ ] Set up CI/CD for testing
-- [ ] Create shell completion scripts
-- [ ] Add `pc init --template` for common project types
-- [ ] Improve error messages and help text
-- [ ] Add `pc archive` command for old contexts
-- [ ] Create installation script
-
-## Log Management Specific
-- [ ] Implement session-based logging (from LOG_MANAGEMENT_TODO.md)
-- [ ] Create /log command improvements
-- [ ] Add log rotation and summarization
-- [ ] Hierarchical log structure when >5KB
-
-## Documentation
+- [ ] Add README badges - version and license <!-- created:2025-05-26 12:37:01 -->
+- [ ] Set up CI/CD with GitHub Actions <!-- created:2025-05-26 12:37:07 -->
 - [ ] Create comprehensive user guide
-- [ ] Add examples directory with workflows
-- [ ] Video/GIF demos for README
-- [ ] Migration guide from other tools
+- [ ] Add shell completion scripts
+- [ ] Implement session-based logging (from LOG_MANAGEMENT_TODO.md)
+
+## Testing Human Workflow
+
+- [ ] Test human workflow - editing TODO.md directly <!-- created:2025-05-26 14:37 -->
+- [x] Human can mark this as complete by changing [ ] to [x] <!-- completed:2025-05-26 14:50 -->
