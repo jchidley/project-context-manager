@@ -2,7 +2,7 @@
 
 Last updated: 2025-05-26 14:50
 
-## In Progress - v0.2.0 Plain Text Migration
+## Completed - v0.2.0 Plain Text Migration
 
 - [x] Export existing SQLite todos to TODO.md format <!-- completed:2025-05-26 14:18 -->
 - [x] Implement plain text todo operations (add, complete, list) <!-- completed:2025-05-26 14:26 -->
@@ -11,10 +11,14 @@ Last updated: 2025-05-26 14:50
 - [x] Rename files to remove _v2 suffix <!-- completed:2025-05-26 14:40 -->
 - [x] Update install script to be more generic <!-- completed:2025-05-26 14:40 -->
 - [x] Test with both human and LLM workflows <!-- completed:2025-05-26 14:55 -->
-- [ ] Update documentation for plain text format
+- [x] Update documentation for plain text format <!-- completed:2025-05-26 15:00 -->
+- [x] Release v0.2.0 with migration guide <!-- completed:2025-05-26 15:10 -->
+
+## Future Enhancements
+
 - [ ] Fix /start command to auto-discover key files (TODO.md, PROJECT_WISDOM.md)
 - [ ] Make HANDOFF.md auto-include pointers to related docs
-- [ ] Release v0.2.0 with migration guide
+- [ ] Add todo section detection (In Progress, To Do, Done)
 
 ## To Do
 
