@@ -1,7 +1,7 @@
 # Slash Commands Audit
 
-## Default Claude Code Commands
-According to the official documentation, these are the built-in commands:
+## Default Claude Code Commands (Built-in)
+According to the official documentation, these are the built-in commands that run Claude Code functions:
 - `/bug` - Report bugs
 - `/clear` - Clear conversation history
 - `/compact` - Compact conversation
@@ -21,7 +21,8 @@ According to the official documentation, these are the built-in commands:
 - `/vim` - Enter vim mode
 
 ## Custom Commands in ~/.claude/commands/
-These appear to be custom additions (23 total files):
+All 23 files in this directory are custom prompt templates, NOT default Claude Code commands.
+They were likely added as a command pack or workflow system:
 
 ### Likely Added by User (created after May 22)
 - `/checkpoint` - Quick state capture during work
