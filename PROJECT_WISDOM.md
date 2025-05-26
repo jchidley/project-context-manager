@@ -13,3 +13,11 @@ Impact: Reinforces the need for immediate testing of database operations, even i
 ### 2025-01-26: GitHub CLI Integration
 Insight: Using `gh release create` with heredoc for release notes provides clean, formatted releases
 Impact: Enables rich release documentation without leaving the terminal, maintaining developer flow
+
+### 2025-01-26: Plain Text > SQLite for Human/LLM Tools
+Insight: SQLite creates barriers for both humans (can't edit directly) and LLMs (need bash commands)
+Impact: Choosing plain text formats enables direct manipulation, git diffs, and seamless integration
+
+### 2025-01-26: Integration Failures Reveal Architecture Flaws
+Insight: Slash commands couldn't find todos because of SQLite/text split
+Impact: When tools don't integrate naturally, the architecture might be wrong

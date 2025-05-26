@@ -1,20 +1,20 @@
 # Project: Project Context Manager
-Updated: 2025-01-26 15:50
+Updated: 2025-01-26 15:55
 
 ## Current State
-Status: v0.1.0 Released - CRITICAL INTEGRATION ISSUE FOUND
-Target: Fix slash command integration with pc tool
-Latest: Discovered slash commands don't know about pc's context system
+Status: v0.1.0 Released - ARCHITECTURE DECISION NEEDED
+Target: Decide on SQLite vs plain text for todo storage
+Latest: Realized SQLite creates friction for LLMs and humans
 
 ## Essential Context
 - Repository: https://github.com/jchidley/project-context-manager
-- **CRITICAL**: Slash commands (/start, /checkpoint) don't find planning docs or todos
-- Planning docs exist but aren't discovered: TODO.md, PROJECT_WISDOM.md, etc.
-- Two separate todo systems: slash commands use files, pc uses SQLite
-- See SLASH_COMMAND_INTEGRATION_FIX.md for detailed analysis
+- **CRITICAL**: SQLite prevents direct file editing by humans/LLMs
+- Slash commands expect plain text TODO.md files
+- See PLAIN_TEXT_MIGRATION_PROPOSAL.md for analysis
+- Plain text would solve integration issues naturally
 
 ## Next Step
-Implement Option 1 from fix document: Update slash commands to be pc-aware
+Decide: Migrate to plain text TODO.md format? (Recommended: YES)
 
 ## If Blocked
-Test with local modifications to ~/.claude/commands/ files first
+Test plain text operations with grep/sed to verify feasibility
