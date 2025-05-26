@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1] - 2025-05-26
+
 ### Added
+- Auto-discovery of key files in /start command (TODO.md, PROJECT_WISDOM.md, etc.)
+- Related Documents section in HANDOFF.md for better context navigation
+- `pc todo progress <pattern>` command to mark tasks as in-progress
+- Support for "## In Progress" section in TODO.md files
 - Session-based logging with `pc session` commands
 - Comprehensive user guide (USER_GUIDE.md)
 - GitHub Actions CI/CD workflows
@@ -15,7 +21,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - README badges for version and license
 
 ### Changed
+- /start, /checkpoint, and /wrap-session slash commands now auto-discover project files
 - Installation script now installs shell completions
+- Todo list filter now supports "in-progress" option
+
+### Enhanced
+- Better integration between pc and Claude Code workflows
+- Improved context loading for continuing work sessions
 
 ## [0.2.0] - 2025-05-26
 
