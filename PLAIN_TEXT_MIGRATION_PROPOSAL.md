@@ -104,5 +104,9 @@ Should we proceed with this migration? The benefits seem to far outweigh the cos
 1. Create migration script to export SQLite data
 2. Implement plain text todo functions
 3. Update all pc commands
-4. Test with both human and LLM workflows
-5. Release as v0.2.0 with migration guide
+4. Fix slash command integration:
+   - Update /start to auto-discover TODO.md, PROJECT_WISDOM.md
+   - Make HANDOFF.md auto-include file pointers
+   - Ensure context is fully loaded without manual intervention
+5. Test with both human and LLM workflows
+6. Release as v0.2.0 with migration guide

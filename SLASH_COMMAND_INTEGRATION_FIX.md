@@ -20,6 +20,12 @@ The slash commands (/start, /checkpoint, etc.) and the project context manager (
    - `/checkpoint` doesn't update the context in `~/.project-contexts/`
    - No awareness of `pc` command capabilities
 
+4. **HANDOFF.md Limitations** (Discovered 2025-01-26):
+   - `/start` only reads HANDOFF.md, not other planning documents
+   - User had to manually update HANDOFF.md to include "Key Files to Read"
+   - Without explicit pointers, critical context gets missed
+   - This is a design flaw that needs addressing in v0.2.0
+
 ## Root Cause
 
 The slash commands were designed before the project context manager existed. They assume a simple file-based workflow, while `pc` provides a more sophisticated context management system.

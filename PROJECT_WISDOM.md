@@ -25,3 +25,7 @@ Impact: When tools don't integrate naturally, the architecture might be wrong
 ### 2025-01-26: Command Origins Matter for Design
 Insight: Claude Code ships with 16 planning/execution templates expecting plain text
 Impact: Tools should align with existing ecosystem conventions, not fight them
+
+### 2025-01-26: HANDOFF.md Needs Explicit Pointers
+Insight: /start only reads HANDOFF.md, missing other critical planning documents
+Impact: Had to manually add "Key Files to Read" section to ensure context loaded properly

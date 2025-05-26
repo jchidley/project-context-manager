@@ -19,6 +19,8 @@
 - [ ] Export existing SQLite todos to TODO.md format
 - [ ] Implement plain text todo operations (add, complete, list)
 - [ ] Update all pc commands to use plain text
+- [ ] Fix /start command to auto-discover key files (TODO.md, PROJECT_WISDOM.md)
+- [ ] Make HANDOFF.md auto-include pointers to related docs
 - [ ] Create migration script for existing users
 - [ ] Test with both human and LLM workflows
 - [ ] Update documentation for plain text format
