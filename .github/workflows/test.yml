@@ -77,7 +77,9 @@ jobs:
             title TEXT,
             status TEXT DEFAULT 'todo',
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            github_issue INTEGER
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            github_issue INTEGER,
+            priority INTEGER DEFAULT 0
         );
         INSERT INTO todos (context, title) VALUES ('test', 'Test todo from SQLite');
         EOF
