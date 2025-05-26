@@ -1,6 +1,6 @@
 # TODO - project-context-manager
 
-Last updated: 2025-05-26 14:50
+Last updated: 2025-05-26 17:35
 
 ## Completed - v0.2.0 Plain Text Migration
 
@@ -14,11 +14,11 @@ Last updated: 2025-05-26 14:50
 - [x] Update documentation for plain text format <!-- completed:2025-05-26 15:00 -->
 - [x] Release v0.2.0 with migration guide <!-- completed:2025-05-26 15:10 -->
 
-## Future Enhancements
+## Completed - Future Enhancements (2025-05-26)
 
-- [ ] Fix /start command to auto-discover key files (TODO.md, PROJECT_WISDOM.md)
-- [ ] Make HANDOFF.md auto-include pointers to related docs
-- [ ] Add todo section detection (In Progress, To Do, Done)
+- [x] Fix /start command to auto-discover key files (TODO.md, PROJECT_WISDOM.md) <!-- completed:2025-05-26 17:15 -->
+- [x] Make HANDOFF.md auto-include pointers to related docs <!-- completed:2025-05-26 17:25 -->
+- [x] Add todo section detection (In Progress, To Do, Done) with `pc todo progress` <!-- completed:2025-05-26 17:35 -->
 
 ## To Do
 

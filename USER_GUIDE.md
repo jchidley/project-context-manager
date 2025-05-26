@@ -201,17 +201,26 @@ pc todo add "Update API documentation"
 List todos with optional filter.
 
 ```bash
-pc todo list          # All todos
-pc todo list todo     # Only uncompleted
-pc todo list done     # Only completed
+pc todo list               # All todos
+pc todo list todo          # Only uncompleted
+pc todo list done          # Only completed
+pc todo list in-progress   # Only in-progress items
+```
+
+#### `pc todo progress <pattern>`
+Mark a todo as in progress by matching pattern.
+
+```bash
+pc todo progress "login"   # Moves to "## In Progress" section
+pc todo progress "API"     # Starts work on matching todo
 ```
 
 #### `pc todo complete <pattern>`
 Mark a todo as complete by matching pattern.
 
 ```bash
-pc todo complete "login"    # Completes "Fix login redirect bug"
-pc todo complete "API"      # Completes "Update API documentation"
+pc todo complete "login"   # Completes "Fix login redirect bug"
+pc todo complete "API"     # Completes "Update API documentation"
 ```
 
 ### Git-Style Commands
@@ -256,7 +265,8 @@ pc log
 2. **During Work**
    ```bash
    pc todo add "New task discovered"
-   pc todo complete "bug"
+   pc todo progress "auth"     # Start working on auth task
+   pc todo complete "bug"      # Mark completed when done
    # Edit TODO.md directly for complex updates
    ```
 

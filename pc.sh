@@ -326,6 +326,113 @@ todo_complete() {
     fi
 }
 
+# Mark a todo as in progress
+todo_progress() {
+    local pattern="$1"
+    local context="${2:-$(get_current_context)}"
+    
+    if [[ -z "$context" ]]; then
+        echo -e "${RED}Error: No active context. Use 'pc switch <context>' first.${NC}"
+        return 1
+    fi
+    
+    local todo_file="${PC_HOME}/${context}/TODO.md"
+    
+    if [[ ! -f "$todo_file" ]]; then
+        echo -e "${RED}No todos found for context: $context${NC}"
+        return 1
+    fi
+    
+    # Find and mark the todo as in progress
+    local tmp_file=$(mktemp)
+    local found=false
+    local progress_text=""
+    local in_progress_items=""
+    local todo_items=""
+    local current_section=""
+    
+    # First pass: collect items and find the one to mark
+    while IFS= read -r line; do
+        if [[ "$line" =~ ^##\  ]]; then
+            current_section="$line"
+        elif [[ "$line" =~ ^-\ \[\ \]\ (.*)$pattern(.*) ]]; then
+            # Found the item to mark as in progress
+            local todo_text="${BASH_REMATCH[1]}$pattern${BASH_REMATCH[2]}"
+            progress_text="$todo_text"
+            found=true
+            # Mark as in progress
+            line="- [>] $todo_text <!-- started:$(date '+%Y-%m-%d %H:%M') -->"
+            in_progress_items="${in_progress_items}${line}\n"
+        elif [[ "$line" =~ ^-\ \[\>\]\ (.*) ]]; then
+            # Existing in-progress item
+            in_progress_items="${in_progress_items}${line}\n"
+        elif [[ "$line" =~ ^-\ \[\ \]\ (.*) ]] && [[ "$current_section" == "## To Do" ]]; then
+            # Regular todo item
+            todo_items="${todo_items}${line}\n"
+        fi
+    done < "$todo_file"
+    
+    if [[ "$found" == false ]]; then
+        echo -e "${RED}No matching todo found for pattern: $pattern${NC}"
+        rm "$tmp_file"
+        return 1
+    fi
+    
+    # Second pass: rebuild the file with proper sections
+    local in_todo_section=false
+    local in_progress_section=false
+    local sections_written=false
+    
+    while IFS= read -r line; do
+        if [[ "$line" == "## To Do" ]]; then
+            # Write In Progress section first if we have items
+            if [[ -n "$in_progress_items" ]] && [[ "$sections_written" == false ]]; then
+                echo "## In Progress" >> "$tmp_file"
+                echo "" >> "$tmp_file"
+                echo -e "$in_progress_items" | sed '/^$/d' >> "$tmp_file"
+                echo "" >> "$tmp_file"
+                sections_written=true
+            fi
+            # Then write To Do section
+            echo "$line" >> "$tmp_file"
+            echo "" >> "$tmp_file"
+            if [[ -n "$todo_items" ]]; then
+                echo -e "$todo_items" | sed '/^$/d' >> "$tmp_file"
+            fi
+            in_todo_section=true
+        elif [[ "$line" == "## In Progress" ]]; then
+            # Skip the old In Progress section, we already wrote it
+            in_progress_section=true
+            continue
+        elif [[ "$line" =~ ^##\  ]] && [[ "$line" != "## To Do" ]]; then
+            # Another section starts
+            if [[ "$in_todo_section" == true ]] || [[ "$in_progress_section" == true ]]; then
+                echo "" >> "$tmp_file"
+            fi
+            echo "$line" >> "$tmp_file"
+            in_todo_section=false
+            in_progress_section=false
+        elif [[ "$in_todo_section" == false ]] && [[ "$in_progress_section" == false ]] && [[ ! "$line" =~ ^-\ \[[\>\x\ ]\]\ (.*) ]]; then
+            # Not in a todo section and not a todo item, keep it
+            echo "$line" >> "$tmp_file"
+        fi
+    done < "$todo_file"
+    
+    # Update the file
+    mv "$tmp_file" "$todo_file"
+    
+    # Update last modified
+    sed -i "s/^Last updated:.*/Last updated: $(date '+%Y-%m-%d %H:%M')/" "$todo_file"
+    
+    echo -e "${YELLOW}Marked as in progress: $progress_text${NC}"
+    
+    # If in working directory, update the local TODO.md too
+    if [[ -f "TODO.md" ]] && [[ "$(realpath TODO.md)" != "$(realpath "$todo_file")" ]]; then
+        cp "$todo_file" "TODO.md"
+        echo -e "${BLUE}Updated local TODO.md${NC}"
+    fi
+}
+
 # === GIT-STYLE OPERATIONS ===
 
 # Stash current context
@@ -780,8 +887,9 @@ ${PURPLE}Context Commands:${NC}
   
 ${PURPLE}Todo Commands:${NC}
   todo add <text>              Add a new todo
-  todo list [filter]           List todos (filter: all|todo|done)
+  todo list [filter]           List todos (filter: all|todo|done|in-progress)
   todo complete <pattern>      Mark todo as complete
+  todo progress <pattern>      Mark todo as in progress
   
 ${PURPLE}Git-style Commands:${NC}
   stash            Temporarily save current context
@@ -797,6 +905,7 @@ ${PURPLE}Session Logging:${NC}
 ${PURPLE}Examples:${NC}
   pc switch my-project         Switch to my-project context
   pc todo add "Fix bug #123"   Add a todo item
+  pc todo progress "bug"       Mark matching todo as in progress
   pc todo complete "bug"       Mark matching todo as done
   pc status                    Show current status
   
@@ -863,9 +972,12 @@ main() {
                 complete|done|d)
                     todo_complete "$@"
                     ;;
+                progress|start|p)
+                    todo_progress "$@"
+                    ;;
                 *)
                     echo -e "${RED}Unknown todo command: $subcmd${NC}"
-                    echo "Use: todo add|list|complete"
+                    echo "Use: todo add|list|complete|progress"
                     ;;
             esac
             ;;

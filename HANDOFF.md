@@ -101,3 +101,11 @@ Today's work is captured in:
 
 ## Final Status
 All major TODO items completed. Project is ready for community use and feedback.
+
+## Related Documents
+- TODO.md - Active tasks and future enhancements
+- PROJECT_WISDOM.md - Technical insights and design decisions
+- CLAUDE.md - Project-specific instructions
+- USER_GUIDE.md - Comprehensive usage guide
+- SESSION_003_20250526.md - Latest work log
+- CHANGELOG.md - Version history
