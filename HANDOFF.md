@@ -1,11 +1,11 @@
 # Project: Project Context Manager
-Updated: 2025-05-26 16:10
+Updated: 2025-05-26 17:40
 
 ## Current State
-Status: v0.2.0 Released + All post-release enhancements complete
-Branch: master (all changes pushed)
+Status: v0.2.1 enhancements complete (not yet released)
+Branch: master (changes committed, ready to push)
 Tests: CI/CD passing - https://github.com/jchidley/project-context-manager/actions
-Latest: Completed session logging, user guide, CI/CD, badges, and shell completions
+Latest: Implemented all three future enhancements from TODO.md
 
 ## Today's Complete Journey
 
@@ -22,6 +22,12 @@ Latest: Completed session logging, user guide, CI/CD, badges, and shell completi
 - ✅ Shell completions: completions/pc.bash and completions/_pc
 - ✅ User Guide: Comprehensive USER_GUIDE.md with examples
 - ✅ Session logging: pc session commands to prevent huge log files
+
+### 3. v0.2.1 Enhancements (COMPLETE - 2025-05-26 17:40)
+- ✅ Fixed /start command to auto-discover key files
+- ✅ HANDOFF.md now auto-includes "Related Documents" section
+- ✅ Added `pc todo progress` command for In Progress section
+- ✅ Updated /checkpoint and /wrap-session commands
 
 ## Essential Context
 - Repository: https://github.com/jchidley/project-context-manager
@@ -55,25 +61,27 @@ pc save/restore            # Manage files
 
 # Todo management (plain text)
 pc todo add "task"         # Add to TODO.md
+pc todo progress "pattern" # Mark as in-progress (NEW in v0.2.1)
 pc todo complete "pattern" # Mark done
-pc todo list              # Show todos
+pc todo list [filter]      # Show todos (all|todo|done|in-progress)
 
 # Git-style operations
 pc stash                  # Temporary save
 pc diff <context>         # Compare contexts
 
-# Session logging (NEW)
+# Session logging
 pc session new "Title"    # Start session log
 pc session log "update"   # Append to session
 pc session summary        # Generate summary
 ```
 
-## Next Steps (Future)
-From TODO.md - Future Enhancements:
-- Fix /start command to auto-discover key files
-- Make HANDOFF.md auto-include pointers to related docs
-- Add todo section detection (In Progress, To Do, Done)
-- Consider v0.3.0 with these improvements
+## Next Steps
+- Push changes to GitHub
+- Create v0.2.1 release with these improvements
+- Future ideas: Consider v0.3.0 with:
+  - Project templates
+  - GitHub wiki integration
+  - Team collaboration features
 
 ## Testing Notes
 - Human workflow: Direct TODO.md editing works ✓
