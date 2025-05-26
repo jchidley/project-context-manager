@@ -22,18 +22,9 @@ According to the official documentation, these are the built-in commands that ru
 
 ## Custom Commands in ~/.claude/commands/
 All 23 files in this directory are custom prompt templates, NOT default Claude Code commands.
-They were likely added as a command pack or workflow system:
 
-### Likely Added by User (created after May 22)
-- `/checkpoint` - Quick state capture during work
-- `/log` - Document current session
-- `/review-status` - Review project status
-- `/start` - Begin or continue work session
-- `/tool` - Tool-related functionality
-- `/update-project` - Update project information
-- `/wrap-session` - End work session
-
-### Likely Part of a Command Pack (created May 22)
+### Commands Added by Claude Code Installation (May 22, 2025)
+These 16 commands were installed with Claude Code:
 - `/brainstorm` - Brainstorming session
 - `/do-file-issues` - Work through file issues
 - `/do-issues` - Work through issues.md
@@ -51,23 +42,43 @@ They were likely added as a command pack or workflow system:
 - `/session-summary` - Summarize session
 - `/setup` - Project setup
 
+### User-Created Commands (Added by Jack)
+These 7 commands were created for session management workflow:
+- `/checkpoint` - Quick state capture during work
+- `/log` - Document current session
+- `/review-status` - Review project status
+- `/start` - Begin or continue work session
+- `/tool` - Tool-related functionality
+- `/update-project` - Update project information
+- `/wrap-session` - End work session
+
 ## Key Observations
 
-1. **None of the custom commands match the default Claude Code commands** - they're completely separate systems
+1. **Three Distinct Command Types**:
+   - **Built-in Claude Code**: Application functions (/help, /model, etc.)
+   - **Claude Code Templates**: Installed prompt templates for planning/execution
+   - **User Session Commands**: Custom workflow for state management
 
-2. **The custom commands form a workflow**:
-   - Planning: `/plan`, `/plan-tdd`, `/plan-gh`
-   - Execution: `/do-todo`, `/do-issues`, `/do-plan`
-   - Session Management: `/start`, `/checkpoint`, `/wrap-session`, `/log`
-   - GitHub Integration: `/gh-issue`, `/make-github-issues`
+2. **Command Workflows**:
+   
+   **Claude Code Template Workflow** (plan → execute):
+   - Planning: `/plan`, `/plan-tdd`, `/plan-gh` → creates plan.md
+   - Execution: `/do-todo`, `/do-plan`, `/do-issues` → reads todo.md/plan.md
+   - Testing: `/find-missing-tests`, `/security-review`
+   - GitHub: `/gh-issue`, `/make-github-issues`
+   
+   **User Session Workflow** (start → work → checkpoint → wrap):
+   - `/start` → Begin session, load HANDOFF.md
+   - `/checkpoint` → Save progress to HANDOFF.md
+   - `/log` → Document session details
+   - `/wrap-session` → Archive and prepare for next session
 
-3. **Integration Issues**:
-   - Custom commands expect files (todo.md, plan.md, issues.md)
-   - Project Context Manager uses different storage
-   - No awareness between the two systems
+3. **File Expectations**:
+   - Claude Code templates expect: todo.md, plan.md, issues.md (lowercase)
+   - User commands expect: HANDOFF.md, PROJECT_WISDOM.md (uppercase)
+   - Both expect plain text files in project directory
 
-4. **Command Sources**:
-   - Default Claude Code: Built into the application
-   - Custom commands: Added to ~/.claude/commands/
-   - May 22 batch: Possibly from a shared command pack
-   - Later additions: User-specific workflow commands
+4. **Integration Challenge**:
+   - Project Context Manager uses SQLite + different directory structure
+   - Custom commands expect plain text files in current directory
+   - No awareness between pc tool and slash commands
