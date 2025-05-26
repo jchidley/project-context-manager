@@ -42,15 +42,15 @@ These 16 commands were installed with Claude Code:
 - `/session-summary` - Summarize session
 - `/setup` - Project setup
 
-### User-Created Commands (Added by Jack)
+### User-Created Commands (Author: Jack Chidley)
 These 7 commands were created for session management workflow:
-- `/checkpoint` - Quick state capture during work
-- `/log` - Document current session
-- `/review-status` - Review project status
-- `/start` - Begin or continue work session
-- `/tool` - Tool-related functionality
-- `/update-project` - Update project information
-- `/wrap-session` - End work session
+- `/checkpoint` - Quick state capture during work (Created: 2025-05-25)
+- `/log` - Document current session (Created: 2025-05-23)
+- `/review-status` - Review project status (Created: 2025-05-25)
+- `/start` - Begin or continue work session (Created: 2025-05-25)
+- `/tool` - Tool-related functionality (Created: 2025-05-25)
+- `/update-project` - Update project information (Created: 2025-05-25)
+- `/wrap-session` - End work session (Created: 2025-05-25)
 
 ## Key Observations
 
