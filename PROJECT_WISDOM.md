@@ -2,6 +2,14 @@
 
 ## Active Insights
 
+### 2025-05-27: Project Structure Alignment  
+Insight: Following CLAUDE_PROJECT_SETUP_GUIDE.md patterns dramatically improves Claude's ability to work uninterrupted
+Impact: Created REQUIREMENTS.md and enhanced CLAUDE.md structure, enabling clearer project context and reducing ambiguity in work sessions
+
+### 2025-05-27: Modular Refactoring Success
+Insight: Breaking 1050-line script into ~500-line main + libraries improves maintainability without sacrificing functionality
+Impact: Easier to test, extend, and debug - each module has single responsibility making changes safer
+
 ### 2025-01-26: First Release Milestone
 Insight: Publishing v0.1.0 marks the transition from concept to usable tool
 Impact: The project now has a stable reference point and can grow from user feedback rather than speculation
