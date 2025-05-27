@@ -7,6 +7,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.2] - 2025-05-27
+
+### Added
+- REQUIREMENTS.md document for comprehensive project requirements
+- PROJECT_STRUCTURE_ALIGNMENT.md documenting alignment with Claude best practices
+- Technical Stack section in CLAUDE.md
+- Constraints & Requirements section in CLAUDE.md
+- CLAUDE_PROJECT_SETUP_GUIDE.md for setting up Claude-ready projects
+
+### Changed
+- **Major refactoring**: Modularized codebase into separate library files
+  - `lib/common.sh` - Shared utilities and functions
+  - `lib/todo_commands.sh` - Todo management functionality  
+  - `lib/stash_commands.sh` - Stash operations
+- Reduced main script from 1050 to ~500 lines
+- Improved error handling with consistent patterns
+- Enhanced input validation for context names
+
+### Added (Technical)
+- Comprehensive test suite using BATS (Bash Automated Testing System)
+- 22+ unit tests covering core functionality
+- GitHub Actions CI/CD pipeline for automated testing
+- Shellcheck linting integration
+- maskfile.md for task automation (test, lint, install, release)
+
+### Fixed
+- All shellcheck warnings in main script
+- Consistent exit codes throughout
+- Trap cleanup for interrupted operations
+
+### Developer Experience
+- Modular architecture makes extending functionality easier
+- Test framework enables confident refactoring
+- Automated tasks via mask reduce manual work
+- Better code organization improves maintainability
+
 ## [0.2.1] - 2025-05-26
 
 ### Added

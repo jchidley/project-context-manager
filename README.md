@@ -58,11 +58,11 @@ pc log
 git clone https://github.com/jchidley/project-context-manager.git
 cd project-context-manager
 
-# Install v0.2.0+ (plain text version)
+# Install latest version (v0.2.2 - refactored & tested)
 ./install.sh
 
 # Or manual installation
-cp pc.sh ~/.local/bin/pc
+cp pc_refactored.sh ~/.local/bin/pc
 chmod +x ~/.local/bin/pc
 ```
 

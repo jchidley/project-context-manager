@@ -6,6 +6,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Project Context Manager (pc) - A developer tool for managing context across multiple concurrent projects. Solves the problem of losing mental state and LLM context files (HANDOFF.md, PROJECT_WISDOM.md, logs) when switching between projects.
 
+## Technical Stack
+
+- Language: Bash 4.0+ (pure shell implementation)
+- Database: None (migrated from SQLite to plain text in v0.2.0)
+- Storage: Plain text files in ~/.project-contexts/
+- Testing: Bats (Bash Automated Testing System)
+- Linting: ShellCheck
+- Task Runner: mask (maskfile.md)
+- CI/CD: GitHub Actions
+
 ## Architecture Overview
 
 ### Core Design Pattern
@@ -105,3 +115,24 @@ The unified prototype uses `.todos.db` with schema:
 
 ### Migration Path
 Current bash implementation designed to establish UX patterns before potential Rust rewrite for performance and distribution.
+
+## Constraints & Requirements
+
+### Must Support
+- Bash 4.0+ on Linux, macOS, WSL
+- Zero runtime dependencies
+- Plain text files (human-editable)
+- Sub-100ms context switches
+- Offline-first operation
+
+### Performance Targets
+- Context switch: < 100ms
+- Todo operations: < 50ms  
+- Log archival: < 200ms
+- No background processes or daemons
+
+### Security Considerations
+- No sensitive data in context files
+- Respect .gitignore patterns
+- Local storage only (no cloud by default)
+- Safe concurrent usage (file locking where needed)

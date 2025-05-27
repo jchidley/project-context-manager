@@ -29,3 +29,15 @@ Impact: Tools should align with existing ecosystem conventions, not fight them
 ### 2025-01-26: HANDOFF.md Needs Explicit Pointers
 Insight: /start only reads HANDOFF.md, missing other critical planning documents
 Impact: Had to manually add "Key Files to Read" section to ensure context loaded properly
+
+### 2025-05-26: Test Coverage Prevents Regressions
+Insight: Creating BATS tests revealed issues with readonly variables and missing functions
+Impact: Automated testing catches problems before users do, enabling confident refactoring
+
+### 2025-05-26: Shellcheck Compliance Improves Reliability
+Insight: SC2155 warnings (declare and assign separately) can mask command failures
+Impact: Following shellcheck recommendations makes scripts more robust and debuggable
+
+### 2025-05-26: Modular Architecture Enables Clean Migration
+Insight: Refactoring into lib/ modules made it easy to fix library paths during deployment
+Impact: Separating concerns into common.sh, todo_commands.sh, and stash_commands.sh improves maintainability
