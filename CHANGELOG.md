@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.3] - 2025-05-27
+
+### Added
+- **Enhanced `pc init` command**: Creates full Claude-ready project structure
+  - Generates CLAUDE.md with comprehensive AI development instructions
+  - Creates REQUIREMENTS.md template for project specifications
+  - Includes maskfile.md for task automation
+  - Adds comprehensive .gitignore for common development patterns
+  - Initializes git repository if not present
+- **Smart directory handling**: 
+  - Default behavior creates subdirectory when no path specified
+  - Safety prompt when initializing in directories with existing files
+  - Supports three usage patterns: `pc init <name>`, `pc init <name> .`, `pc init <name> /path`
+- Pre-populated TODO.md with project setup tasks
+- Enhanced HANDOFF.md with project initialization context
+- PROJECT_WISDOM.md template for capturing technical insights
+
+### Changed
+- `pc init` now creates a complete AI-assisted development environment by default
+- Improved safety checks to prevent accidental file overwrites
+- Better user feedback during initialization process
+
+### Fixed
+- Todo count bug where `grep -c` would fail when no matches found
+- Consistent error handling in todo operations
+
 ## [0.2.2] - 2025-05-27
 
 ### Added

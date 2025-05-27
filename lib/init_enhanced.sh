@@ -4,11 +4,13 @@
 # Enhanced init command that creates full project structure
 cmd_init_enhanced() {
     local context="${1:-}"
-    local project_dir="${2:-$(pwd)}"
+    local project_dir="${2:-}"
+    
     
     if [[ -z "$context" ]]; then
         error "Context name required"
         echo "Usage: pc init <name> [project_directory]"
+        echo "       pc init <name> .  (to use current directory)"
         return 1
     fi
     
@@ -19,6 +21,28 @@ cmd_init_enhanced() {
     if [[ -d "$context_dir" ]]; then
         error "Context already exists: $context"
         return 1
+    fi
+    
+    # If no directory specified, create a subdirectory with the context name
+    if [[ -z "$project_dir" ]]; then
+        project_dir="./${context}"
+        info "No directory specified, will create: $project_dir"
+    fi
+    
+    # If project_dir is "." (current directory), check if it's safe
+    if [[ "$project_dir" == "." ]]; then
+        project_dir="$(pwd)"
+        # Check if current directory has existing files
+        local file_count=$(find . -maxdepth 1 -type f | wc -l)
+        if [[ $file_count -gt 0 ]]; then
+            echo "Warning: Current directory contains $file_count file(s)"
+            echo -n "Initialize project in current directory? (y/N): "
+            read -r response
+            if [[ ! "$response" =~ ^[Yy]$ ]]; then
+                info "Initialization cancelled"
+                return 1
+            fi
+        fi
     fi
     
     info "Initializing Claude-ready project: $context"
@@ -623,10 +647,13 @@ EOF
     
     add_to_history "init" "$context (enhanced)"
     
+    # Get absolute path for display
+    local abs_project_dir=$(cd "$project_dir" && pwd)
+    
     echo ""
     success "Initialized Claude-ready project: $context"
     echo ""
-    info "Created in $project_dir:"
+    info "Created in $abs_project_dir:"
     echo "  - CLAUDE.md       : AI development instructions"
     echo "  - REQUIREMENTS.md : Project requirements"  
     echo "  - maskfile.md     : Task automation"
@@ -638,7 +665,7 @@ EOF
     echo "  - PROJECT_WISDOM.md : Technical insights"
     echo ""
     info "Next steps:"
-    echo "  1. cd $project_dir"
+    echo "  1. cd $abs_project_dir"
     echo "  2. Review and update CLAUDE.md and REQUIREMENTS.md"
     echo "  3. Run 'mask init' to set up development environment"
     echo "  4. Start development with 'pc switch $context'"

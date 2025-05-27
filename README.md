@@ -46,6 +46,7 @@ pc log
 - **Zero Dependencies**: Pure bash implementation, works everywhere
 - **Git-Aware**: Respects version control, warns on uncommitted changes
 - **Plain Text Todos**: Human and LLM-editable TODO.md files (v0.2.0+)
+- **Claude-Ready Projects**: Enhanced init creates full AI-assisted dev setup (v0.2.3+)
 - **Claude Code Integration**: Works seamlessly with slash commands
 - **GitHub Integration**: Optional two-way sync with GitHub issues
 - **Non-Destructive**: Automatic backups before operations
@@ -69,7 +70,12 @@ chmod +x ~/.local/bin/pc
 ## Quick Start
 
 ```bash
-# Switch to your project
+# Create a new Claude-ready project
+pc init my-project              # Creates subdirectory ./my-project
+pc init my-project .            # Initialize in current directory
+pc init my-project ~/projects   # Initialize in specific directory
+
+# Or work with existing project
 cd ~/my-project
 pc switch my-project
 

@@ -105,10 +105,10 @@ cmd_init() {
         mode="basic"
     fi
     
-    # Default to current directory if not specified
-    if [[ -z "$project_dir" ]] && [[ "$mode" == "full" ]]; then
-        project_dir="$(pwd)"
-    fi
+    # Don't set default project_dir - let enhanced init handle it
+    # if [[ -z "$project_dir" ]] && [[ "$mode" == "full" ]]; then
+    #     project_dir="$(pwd)"
+    # fi
     
     validate_context_name "$context" || return 1
     

@@ -60,14 +60,40 @@ autoload -U compinit && compinit
 
 ## Quick Start
 
-### 1. Start with a Project
+### 1. Initialize a New Project
+
+```bash
+# Create a Claude-ready project in a new subdirectory
+pc init my-project              # Creates ./my-project with full setup
+
+# Initialize in current directory (prompts if files exist)
+pc init my-project .            # Use current directory
+
+# Initialize in specific directory
+pc init my-project ~/projects/my-project
+```
+
+This creates:
+- CLAUDE.md - AI development instructions
+- REQUIREMENTS.md - Project requirements template
+- maskfile.md - Task automation setup
+- .gitignore - Common ignore patterns
+- Context files in ~/.project-contexts/my-project/
+
+**Safety Features:**
+- Default behavior creates a subdirectory to avoid overwriting files
+- Prompts for confirmation when initializing in non-empty directories
+- Creates git repository if one doesn't exist
+- Never overwrites existing files
+
+### 2. Or Start with Existing Project
 
 ```bash
 cd ~/my-project
 pc switch my-project
 ```
 
-### 2. Add Some Todos
+### 3. Add Some Todos
 
 ```bash
 pc todo add "Implement user authentication"
@@ -75,7 +101,7 @@ pc todo add "Write unit tests"
 pc todo list
 ```
 
-### 3. Save Your Work State
+### 4. Save Your Work State
 
 Create a `HANDOFF.md` file describing where you are:
 ```markdown
@@ -89,7 +115,7 @@ Then save:
 pc save
 ```
 
-### 4. Switch to Another Project
+### 5. Switch to Another Project
 
 ```bash
 cd ~/other-project
@@ -97,7 +123,7 @@ pc switch other-project
 # Your my-project context is safely stored!
 ```
 
-### 5. Come Back Later
+### 6. Come Back Later
 
 ```bash
 cd ~/my-project
@@ -141,6 +167,25 @@ All data is stored in markdown files that can be:
 ## Commands Reference
 
 ### Context Management
+
+#### `pc init <name> [directory]`
+Initialize a new project context with Claude-ready files.
+
+```bash
+pc init my-project              # Creates ./my-project subdirectory
+pc init my-project .            # Use current directory (with safety check)
+pc init my-project ~/projects   # Create in specified directory
+```
+
+Creates:
+- **Project files**: CLAUDE.md, REQUIREMENTS.md, maskfile.md, .gitignore
+- **Context files**: HANDOFF.md, TODO.md, PROJECT_WISDOM.md
+- **Git repository**: Initializes if not already present
+
+**Behavior:**
+- Without directory argument: Creates a subdirectory named after the context
+- With `.` argument: Uses current directory (prompts if non-empty)
+- With path argument: Creates/uses the specified directory
 
 #### `pc switch <context> [--force]`
 Switch to a different context. Saves current work and restores the target context.
