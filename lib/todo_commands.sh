@@ -114,7 +114,8 @@ todo_complete() {
     fi
     
     # Count matches
-    local matches=$(grep -c "^- \[ \] .*${pattern}" "$todo_file" 2>/dev/null || echo 0)
+    local matches
+    matches=$(grep "^- \[ \] .*${pattern}" "$todo_file" 2>/dev/null | wc -l || echo 0)
     
     if [[ $matches -eq 0 ]]; then
         error "No uncompleted todo found matching: $pattern"

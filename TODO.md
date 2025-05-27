@@ -1,11 +1,12 @@
 # TODO - project-context-manager
 
-Last updated: 2025-05-26 20:45
+Last updated: 2025-05-27 15:34:02
 
 ## To Do - High Priority
 
 - [ ] Fix grep -c bug in todo_commands.sh <!-- created:2025-05-26 21:20 -->
 - [ ] Monitor community feedback and GitHub issues for v0.3.0 ideas <!-- created:2025-05-26 19:40 -->
+- [x] Enhance pc init to create full Claude-ready project structure <!-- created:2025-05-27 15:00 --> <!-- completed:2025-05-27 -->
 
 ## To Do - Code Quality & Testing
 

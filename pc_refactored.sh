@@ -5,8 +5,15 @@
 # Get the directory where this script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# If installed, libraries are in ~/.local/share/pc/lib
+if [[ -d "${HOME}/.local/share/pc/lib" ]]; then
+    LIB_DIR="${HOME}/.local/share/pc/lib"
+else
+    LIB_DIR="${SCRIPT_DIR}/lib"
+fi
+
 # Source common library
-source "${SCRIPT_DIR}/lib/common.sh"
+source "${LIB_DIR}/common.sh"
 
 # Set up error handling
 setup_error_handling
@@ -25,7 +32,8 @@ Project Context Manager v${VERSION}
 Usage: pc <command> [arguments]
 
 Commands:
-    init <name>          Initialize a new context
+    init <name> [dir]    Initialize new context with Claude-ready project
+                         Options: --basic (context only, no project files)
     switch <name>        Switch to a different context
     status               Show current context status
     list                 List all contexts
@@ -58,7 +66,9 @@ Environment Variables:
     DEBUG                Set to 1 for debug output
 
 Examples:
-    pc init my-project
+    pc init my-project              # Full Claude-ready project in current dir
+    pc init my-project ~/projects   # Full project in specified directory
+    pc init my-project --basic      # Just context files, no project setup
     pc todo add "Implement user authentication"
     pc switch other-project
     pc stash "work in progress"
@@ -68,11 +78,36 @@ EOF
 # Command: init
 cmd_init() {
     local context="${1:-}"
+    local project_dir="${2:-}"
     
     if [[ -z "$context" ]]; then
         error "Context name required"
-        echo "Usage: pc init <name>"
+        echo "Usage: pc init <name> [project_directory]"
+        echo ""
+        echo "Options:"
+        echo "  --basic    Create basic context only (original behavior)"
+        echo "  --full     Create full Claude-ready project structure (default)"
         return 1
+    fi
+    
+    # Check for --basic flag
+    if [[ "$context" == "--basic" ]]; then
+        error "Context name required"
+        return 1
+    fi
+    
+    # Handle flags
+    local mode="full"
+    if [[ "${2:-}" == "--basic" ]]; then
+        mode="basic"
+        project_dir=""
+    elif [[ "${3:-}" == "--basic" ]]; then
+        mode="basic"
+    fi
+    
+    # Default to current directory if not specified
+    if [[ -z "$project_dir" ]] && [[ "$mode" == "full" ]]; then
+        project_dir="$(pwd)"
     fi
     
     validate_context_name "$context" || return 1
@@ -84,13 +119,15 @@ cmd_init() {
         return 1
     fi
     
-    info "Initializing context: $context"
-    
-    ensure_dir "$context_dir" || return 1
-    set_current_context "$context" || return 1
-    
-    # Create default files
-    cat > "${context_dir}/HANDOFF.md" << EOF
+    if [[ "$mode" == "basic" ]]; then
+        # Original basic init
+        info "Initializing basic context: $context"
+        
+        ensure_dir "$context_dir" || return 1
+        set_current_context "$context" || return 1
+        
+        # Create default files
+        cat > "${context_dir}/HANDOFF.md" << EOF
 # Project: $context
 Updated: $(get_timestamp)
 
@@ -111,7 +148,7 @@ Review project requirements
 - PROJECT_WISDOM.md - Technical insights
 EOF
 
-    cat > "${context_dir}/TODO.md" << EOF
+        cat > "${context_dir}/TODO.md" << EOF
 # TODO - $context
 
 Last updated: $(get_timestamp)
@@ -127,10 +164,15 @@ Last updated: $(get_timestamp)
 ## Done
 EOF
 
-    touch "${context_dir}/PROJECT_WISDOM.md"
-    
-    add_to_history "init" "$context"
-    success "Initialized context: $context"
+        touch "${context_dir}/PROJECT_WISDOM.md"
+        
+        add_to_history "init" "$context"
+        success "Initialized basic context: $context"
+    else
+        # Load and execute enhanced init
+        source "${LIB_DIR}/init_enhanced.sh"
+        cmd_init_enhanced "$context" "$project_dir"
+    fi
 }
 
 # Command: switch
@@ -417,7 +459,7 @@ restore_context_files() {
 }
 
 # Include todo commands
-source "${SCRIPT_DIR}/lib/todo_commands.sh" 2>/dev/null || {
+source "${LIB_DIR}/todo_commands.sh" 2>/dev/null || {
     # Fallback todo commands if separate file doesn't exist
     cmd_todo() {
         local subcommand="${1:-list}"
@@ -575,7 +617,7 @@ source "${SCRIPT_DIR}/lib/todo_commands.sh" 2>/dev/null || {
 }
 
 # Include stash commands
-source "${SCRIPT_DIR}/lib/stash_commands.sh" 2>/dev/null || {
+source "${LIB_DIR}/stash_commands.sh" 2>/dev/null || {
     # Fallback stash commands
     cmd_stash() {
         local name="${1:-autostash_$(date +%Y%m%d_%H%M%S)}"
